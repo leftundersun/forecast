@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">Forecast</string>
+    <string name="main_activity_title">Lista de cidades</string>
+    <string name="add_cidade_activity_title">Adicionar cidade</string>
+    <string name="show_details_activity_title">Mais Informações</string>
+
+    <string name="last_update">Última atualização: </string>
+    <string name="nenhuma_cidade_selecionada">Adicione cidades para ver a previsão do tempo para elas</string>
+    <string name="nenhuma_cidade_para_exibir">Ainda não há nenhuma cidade para selecionar, verifique sua conexão com a internet</string>
+    <string name="add_cities_tooltip">Adicionar cidades</string>
+
+    <string name="txt_info_default_cidade">Cidade/UF</string>
+    <string name="txt_info_minima">Mín: </string>
+    <string name="txt_info_maxima">Máx: </string>
+    <string name="txt_info_latitude">Latitude: </string>
+    <string name="txt_info_longitude">Longitude: </string>
+    <string name="txt_info_wind">Velocidade do vento</string>
+    <string name="txt_info_visibilidade">Visibilidade</string>
+    <string name="txt_info_umidade">Umidade</string>
+    <string name="txt_info_pressure">Pressão atmosférica</string>
+
+    <string name="txt_info_celsius">° C</string>
+    <string name="txt_info_percent">%</string>
+    <string name="txt_info_meters_per_second"> m/s</string>
+    <string name="txt_info_kilometers"> km</string>
+    <string name="txt_info_hectopascal"> hPa</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

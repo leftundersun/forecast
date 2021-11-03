@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingVertical="@dimen/space1"
+    android:paddingHorizontal="@dimen/space2"
+    android:background="@color/white">
+
+    <TextView
+        android:id="@+id/txtCidade"
+        android:textSize="@dimen/txt_info"
+        android:text="@string/txt_info_default_cidade"
+        android:textColor="@color/dark_gray"
+        android:paddingVertical="@dimen/space2"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"/>
+
+    <ImageView
+        android:id="@+id/imgClima"
+        android:src="@drawable/ic_sunny"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"/>
+
+</LinearLayout>

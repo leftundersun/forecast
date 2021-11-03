@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AddCidadeFragment">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:paddingVertical="@dimen/space2"
+            android:paddingHorizontal="@dimen/space4"
+            android:gravity="center_vertical"
+            android:background="@color/colorPrimary"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/big">
+
+            <TextView
+                android:text="@string/add_cidade_activity_title"
+                android:textColor="@color/white"
+                android:textSize="@dimen/txt_big"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+        <SearchView
+            android:background="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/normal"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/listAddCidades"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+        <TextView
+            android:visibility="gone"
+            android:id="@+id/txtNoCitiesToAdd"
+            android:textColor="@color/white"
+            android:textSize="@dimen/txt_normal"
+            android:text="@string/nenhuma_cidade_para_exibir"
+            android:gravity="center_vertical|center_horizontal"
+            android:layout_marginHorizontal="@dimen/space4"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+    </LinearLayout>
+
+</FrameLayout>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- margins & paddings -->
+    <dimen name="space1">5dp</dimen>
+    <dimen name="space2">10dp</dimen>
+    <dimen name="space3">15dp</dimen>
+    <dimen name="space4">20dp</dimen>
+    <!-- elements sizes -->
+    <dimen name="normal">50dp</dimen>
+    <dimen name="big">60dp</dimen>
+    <!-- fonts -->
+    <dimen name="txt_small">10sp</dimen>
+    <dimen name="txt_normal">14sp</dimen>
+    <dimen name="txt_info">16sp</dimen>
+    <dimen name="txt_big">20sp</dimen>
+</resources>
