@@ -3,6 +3,7 @@ package com.example.forecast.db.models
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import kotlin.math.roundToInt
 
 @Entity
 data class Cidade(
@@ -30,7 +31,8 @@ data class Cidade(
     var pressao: Int = 0) {
 
     override fun toString(): String {
-        return nome
+        var cTemp = temperatura - 273.15
+        return "$nome - ${cTemp.roundToInt()}° C"
     }
 
 }

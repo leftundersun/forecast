@@ -1,26 +1,43 @@
 package com.example.forecast.views.add_cidade
 
 import android.app.Application
+import android.content.Context
+import android.content.SharedPreferences
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
+import com.example.forecast.R
 import com.example.forecast.db.ForecastDatabase
-import com.example.forecast.db.daos.CidadeDao
 import com.example.forecast.db.models.Cidade
 import com.example.forecast.db.repositories.CidadeRepository
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class AddCidadeViewModel(application: Application) : AndroidViewModel(application) {
 
-    val findAll: LiveData<List<Cidade>>
+    var findAllByCodigosNotIn: LiveData<List<Cidade>>
     private val cidadeRepository: CidadeRepository
+    private val sharedPrefs: SharedPreferences
+    private val addCidadePrefListener: SharedPreferences.OnSharedPreferenceChangeListener
 
     init {
         val cidadeDao = ForecastDatabase.getDb(application).cidadeDao()
         cidadeRepository = CidadeRepository(cidadeDao)
-        findAll = cidadeRepository.findAll
+
+        sharedPrefs = application.getSharedPreferences(
+            application.resources.getString(R.string.shared_preferences_file),
+            Context.MODE_PRIVATE
+        )
+        cidadeRepository.codigos = sharedPrefs.getStringSet(application.resources.getString(R.string.cidades_selecionadas_key), mutableSetOf<String>())!!
+        Log.i("cidadeRepository.codigos", cidadeRepository.codigos.size.toString())
+        findAllByCodigosNotIn = cidadeRepository.findAllByCodigosNotIn
+
+        addCidadePrefListener = SharedPreferences.OnSharedPreferenceChangeListener { prefs, key ->
+            Log.i("cidadeRepository.codigos", cidadeRepository.codigos.size.toString())
+            if (key == application.resources.getString(R.string.cidades_selecionadas_key)) {
+                cidadeRepository.codigos = sharedPrefs.getStringSet(application.resources.getString(R.string.cidades_selecionadas_key), mutableSetOf<String>())!!
+                findAllByCodigosNotIn = cidadeRepository.findAllByCodigosNotIn
+            }
+        }
+        sharedPrefs.registerOnSharedPreferenceChangeListener(addCidadePrefListener)
     }
 
 }

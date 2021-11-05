@@ -11,8 +11,9 @@ class CidadeRepository(private val cidadeDao: CidadeDao) {
 
     val findAll: LiveData<List<Cidade>> = cidadeDao.findAll()
 
-    var codigos = emptySet<String>()
+    var codigos = mutableSetOf<String>()
     val findAllByCodigos: LiveData<List<Cidade>> = cidadeDao.findAllByCodigos(codigos)
+    val findAllByCodigosNotIn: LiveData<List<Cidade>> = cidadeDao.findAllByCodigosNotIn(codigos)
 
     suspend fun add(cidade: Cidade) {
         cidadeDao.add(cidade)
