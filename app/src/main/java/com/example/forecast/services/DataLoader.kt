@@ -1,17 +1,14 @@
 package com.example.forecast.services
 
 import android.app.Activity
-import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
-import androidx.lifecycle.AndroidViewModel
+import com.example.forecast.R
 import com.example.forecast.db.ForecastDatabase
 import com.example.forecast.db.daos.CidadeDao
 import com.example.forecast.db.models.Cidade
 
-class DataLoader(activity: Activity) {
-
-    val CIDADES_KEY = "CIDADES_SELECIONADAS"
+class DataLoader(var activity: Activity) {
 
     var sharedPrefs: SharedPreferences
     var cidadeDao: CidadeDao
@@ -22,7 +19,10 @@ class DataLoader(activity: Activity) {
     }
 
     suspend fun getSelectedCidades(): List<Cidade> {
-        var codigosSelecionadas = sharedPrefs.getStringSet(CIDADES_KEY, mutableSetOf<String>())
+        var codigosSelecionadas = sharedPrefs.getStringSet(
+            activity.resources.getString(R.string.cidades_selecionadas_key),
+            mutableSetOf<String>()
+        )
         return getCidades(codigosSelecionadas)
     }
 
