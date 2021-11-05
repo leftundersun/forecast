@@ -11,7 +11,7 @@ import com.example.forecast.db.models.Cidade
 
 class CidadeAdapter : RecyclerView.Adapter<CidadeViewHolder>() {
 
-    var cidades = emptyList<Cidade>()
+    private var cidades = emptyList<Cidade>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CidadeViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.layout_item_cidade, parent, false)
@@ -25,6 +25,11 @@ class CidadeAdapter : RecyclerView.Adapter<CidadeViewHolder>() {
 
     override fun getItemCount(): Int {
         return cidades.size
+    }
+
+    fun setContent(cidades: List<Cidade>) {
+        this.cidades = cidades
+        notifyDataSetChanged()
     }
 
 }

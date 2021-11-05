@@ -3,16 +3,21 @@ package com.example.forecast.services
 import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
+import android.net.ConnectivityManager
+import android.net.Network
+import android.net.NetworkCapabilities
 import android.util.Log
 import com.example.forecast.R
 import com.example.forecast.db.ForecastDatabase
-import com.example.forecast.db.daos.CidadeDao
 import com.example.forecast.db.models.Cidade
+import com.example.forecast.db.repositories.CidadeRepository
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import okhttp3.*
+import org.intellij.lang.annotations.Language
 import org.json.JSONObject
 import java.io.IOException
+import java.text.SimpleDateFormat
 import java.util.*
 
 class WebService(var activity: Activity) {
@@ -20,21 +25,48 @@ class WebService(var activity: Activity) {
 
     var client: OkHttpClient? = null
     var baseUrl = "http://api.openweathermap.org/data/2.5/weather"
-    var cidadeDao: CidadeDao
+    private val cidadeRepository: CidadeRepository
     var sharedPrefs: SharedPreferences
     var codigos = mutableListOf("3470073","3462557","3466933","3463605","3466537","3456068","3448622","3452925","3454954","3461481")
 
     init {
+        var cidadeDao = ForecastDatabase.getDb(activity.application).cidadeDao()
+        this.cidadeRepository = CidadeRepository(cidadeDao)
         this.client = OkHttpClient()
-        var db = ForecastDatabase.getDb(activity.application)
-        this.cidadeDao = db.cidadeDao()
-        this.sharedPrefs = activity.getPreferences(Context.MODE_PRIVATE)
+        this.sharedPrefs = activity.getSharedPreferences(
+            activity.application.resources.getString(R.string.shared_preferences_file),
+            Context.MODE_PRIVATE
+        )
+    }
+
+    fun hasConnection(): Boolean {
+        val cm = activity.application.getSystemService(ConnectivityManager::class.java)
+        var caps = cm.getNetworkCapabilities(cm.activeNetwork)
+        if (caps != null) {
+            return caps!!.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+        } else {
+            cm.registerDefaultNetworkCallback(object : ConnectivityManager.NetworkCallback() {
+                override fun onAvailable(network: Network) {
+                    Log.e("NETWORKSTATE", "The default network is now: " + network)
+                    runBlocking {
+                        launch {
+                            getAll()
+                        }
+                    }
+                }
+            })
+            return false
+        }
     }
 
     suspend fun getAll() {
-        //verificar conexão
-        for (codigo in codigos) {
-            get(codigo)
+        if (hasConnection()) {
+            Log.i("NETWORK_STATE", true.toString())
+            for (codigo in codigos) {
+                get(codigo)
+            }
+        } else {
+            Log.i("NETWORK_STATE", false.toString())
         }
     }
 
@@ -56,23 +88,17 @@ class WebService(var activity: Activity) {
                     Log.e("WEBSERVICE ERROR", response.toString())
                 } else {
                     try {
-                        var date = Date()
+
                         with(sharedPrefs.edit()){
                             putString(
                                 activity.resources.getString(R.string.last_update_key),
-                                date.toString()
+                                getFormatedDate()
                             )
                             commit()
                         }
                         var cidade = parseJson(JSONObject(response.body!!.string()))
                         runBlocking {
-                            launch {
-                                if (cidadeDao.findOne(codigo) != null) {
-                                    cidadeDao.update(cidade)
-                                } else {
-                                    cidadeDao.add(cidade)
-                                }
-                            }
+                            cidadeRepository.add(cidade)
                         }
                     } catch (e: Exception) {
                         Log.e("WEBSERVICE ERROR", e.toString())
@@ -80,6 +106,12 @@ class WebService(var activity: Activity) {
                 }
             }
         })
+    }
+
+    fun getFormatedDate(): String {
+        var date = Date()
+        var format = SimpleDateFormat("dd/MM/yyyy HH:mm:ss")
+        return format.format(date)
     }
 
     fun parseJson(json: JSONObject): Cidade {

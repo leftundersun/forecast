@@ -23,10 +23,4 @@ class AddCidadeViewModel(application: Application) : AndroidViewModel(applicatio
         findAll = cidadeRepository.findAll
     }
 
-    fun addCidade(cidade: Cidade) {
-        viewModelScope.launch(Dispatchers.IO) {
-            cidadeRepository.add(cidade)
-        }
-    }
-
 }

@@ -35,15 +35,14 @@
             android:layout_height="@dimen/normal"/>
 
         <androidx.recyclerview.widget.RecyclerView
+            android:visibility="gone"
             android:id="@+id/listAddCidades"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"/>
 
         <TextView
-            android:visibility="gone"
             android:id="@+id/txtNoCitiesToAdd"
-            android:textColor="@color/white"
             android:textSize="@dimen/txt_normal"
             android:text="@string/nenhuma_cidade_para_exibir"
             android:gravity="center_vertical|center_horizontal"

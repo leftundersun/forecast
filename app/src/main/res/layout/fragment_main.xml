@@ -46,7 +46,7 @@
             android:padding="@dimen/space2"
             android:text="@string/last_update"/>
 
-        <ListView
+        <androidx.recyclerview.widget.RecyclerView
             android:visibility="gone"
             android:id="@+id/listHomepage"
             android:layout_width="match_parent"

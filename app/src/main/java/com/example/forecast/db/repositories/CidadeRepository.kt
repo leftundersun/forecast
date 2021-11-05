@@ -6,10 +6,20 @@ import com.example.forecast.db.models.Cidade
 
 class CidadeRepository(private val cidadeDao: CidadeDao) {
 
+    var codigo = ""
+    val findOne: LiveData<Cidade> = cidadeDao.findOne(codigo)
+
     val findAll: LiveData<List<Cidade>> = cidadeDao.findAll()
+
+    var codigos = emptySet<String>()
+    val findAllByCodigos: LiveData<List<Cidade>> = cidadeDao.findAllByCodigos(codigos)
 
     suspend fun add(cidade: Cidade) {
         cidadeDao.add(cidade)
+    }
+
+    suspend fun update(cidade: Cidade) {
+        cidadeDao.update(cidade)
     }
 
 }

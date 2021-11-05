@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.forecast.adapters.CidadeAdapter
 import com.example.forecast.databinding.FragmentAddCidadeBinding
 import com.example.forecast.services.WebService
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
@@ -28,7 +29,12 @@ class AddCidadeFragment : Fragment() {
         binding.listAddCidades.adapter = adapter
 
         viewModel.findAll.observe(viewLifecycleOwner, { cidades ->
-            adapter.cidades = cidades
+            if (cidades.isNotEmpty()) {
+                showList()
+            } else {
+                showEmptyMessage()
+            }
+            adapter.setContent(cidades)
         })
 
         loadCidades()
@@ -39,11 +45,21 @@ class AddCidadeFragment : Fragment() {
     fun loadCidades(): Boolean {
         val webService = WebService(this.requireActivity())
         runBlocking {
-            launch {
+            launch(Dispatchers.IO) {
                 webService.getAll()
             }
         }
         return true
+    }
+
+    fun showList() {
+        this.binding!!.listAddCidades.visibility = View.VISIBLE
+        this.binding!!.txtNoCitiesToAdd.visibility = View.GONE
+    }
+
+    fun showEmptyMessage() {
+        this.binding!!.txtNoCitiesToAdd.visibility = View.VISIBLE
+        this.binding!!.listAddCidades.visibility = View.GONE
     }
 
 }

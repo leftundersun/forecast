@@ -25,6 +25,7 @@
     <string name="txt_info_kilometers"> km</string>
     <string name="txt_info_hectopascal"> hPa</string>
 
+    <string name="shared_preferences_file">com.example.forecast.PREFERENCE_FILE</string>
     <string name="cidades_selecionadas_key">cidades_selecionas</string>
     <string name="last_update_key">last_update</string>
 </resources>
