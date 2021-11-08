@@ -3,7 +3,6 @@ package com.example.forecast.views.add_cidade
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import com.example.forecast.R
@@ -27,13 +26,11 @@ class AddCidadeViewModel(application: Application) : AndroidViewModel(applicatio
             Context.MODE_PRIVATE
         )
         var codigos = sharedPrefs.getStringSet(application.resources.getString(R.string.cidades_selecionadas_key), mutableSetOf<String>())!!
-        Log.i("addCidadeViewModel.codigos", codigos.size.toString())
         findAllByCodigosNotIn = cidadeRepository.findAllByCodigosNotIn(codigos)
 
         addCidadePrefListener = SharedPreferences.OnSharedPreferenceChangeListener { prefs, key ->
             if (key == application.resources.getString(R.string.cidades_selecionadas_key)) {
                 var codigos = sharedPrefs.getStringSet(application.resources.getString(R.string.cidades_selecionadas_key), mutableSetOf<String>())!!
-                Log.i("addCidadeViewModel.codigos", codigos.size.toString())
                 findAllByCodigosNotIn = cidadeRepository.findAllByCodigosNotIn(codigos)
             }
         }

@@ -49,14 +49,16 @@
                     <TextView
                         android:id="@+id/txtInfoCidade"
                         android:text="@string/txt_info_default_cidade"
-                        style="@style/txtInfo"
+                        android:textSize="@dimen/txt_big"
+                        android:layout_marginBottom="@dimen/space4"
                         android:layout_weight="3"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"/>
 
                     <TextView
                         android:id="@+id/txtInfoTemperatura"
-                        style="@style/txtInfo"
+                        android:textSize="@dimen/txt_big"
+                        android:text="° C"
                         android:gravity="end"
                         android:layout_weight="1"
                         android:layout_width="0dp"
@@ -104,12 +106,28 @@
 
             </LinearLayout>
 
-            <ImageView
-                android:id="@+id/imgInfoClima"
-                android:src="@drawable/ic_sunny"
+            <LinearLayout
+                android:orientation="vertical"
                 android:layout_weight="1"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:id="@+id/imgInfoClima"
+                    android:src="@drawable/ic_01d"/>
+
+                <TextView
+                    android:gravity="center_horizontal|center_vertical"
+                    android:text="Ensolarado"
+                    android:id="@+id/txtInfoWeather"
+                    style="@style/txtInfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
 
         </LinearLayout>
 

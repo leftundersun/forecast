@@ -22,8 +22,9 @@ class CidadeAdapter @Inject constructor() : RecyclerView.Adapter<CidadeAdapter.C
     }
 
     override fun onBindViewHolder(holder: CidadeViewHolder, position: Int) {
-        holder.cidade.text = cidades[position].toString()
-        //set icon
+        var cidade = cidades[position]
+        holder.cidade.text = cidade.toString()
+        holder.icon.setImageResource(cidade.getImageResource())
     }
 
     override fun getItemCount(): Int {

@@ -3,7 +3,6 @@ package com.example.forecast.views.main
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -31,17 +30,14 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         this.lastUpdate.value = sharedPrefs.getString(application.resources.getString(R.string.last_update_key),"Nunca")!!
 
         var codigos = sharedPrefs.getStringSet(application.resources.getString(R.string.cidades_selecionadas_key), mutableSetOf<String>())!!
-        Log.i("cidadeRepository.codigos", codigos.size.toString())
         this.findAllByCodigos = cidadeRepository.findAllByCodigos(codigos)
 
         this.mainPrefListener = SharedPreferences.OnSharedPreferenceChangeListener { prefs, key ->
-            Log.i("main.prefListener", key)
             if (key == application.resources.getString(R.string.last_update_key)) {
                 this.lastUpdate.value = sharedPrefs.getString(application.resources.getString(R.string.last_update_key),"Nunca")!!
             }
             if (key == application.resources.getString(R.string.cidades_selecionadas_key)) {
                 var codigos = sharedPrefs.getStringSet(application.resources.getString(R.string.cidades_selecionadas_key), mutableSetOf<String>())!!
-                Log.i("cidadeRepository.codigos", codigos.size.toString())
                 this.findAllByCodigos = cidadeRepository.findAllByCodigos(codigos)
             }
         }

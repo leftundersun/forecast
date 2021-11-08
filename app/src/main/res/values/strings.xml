@@ -19,6 +19,16 @@
     <string name="txt_info_umidade">Umidade:</string>
     <string name="txt_info_pressure">Pressão atmosférica:</string>
 
+    <string name="clima_01d">Ensolarado</string>
+    <string name="clima_02d">Poucas nuvens</string>
+    <string name="clima_03d">Parcialmente nublado</string>
+    <string name="clima_04d">Nublado</string>
+    <string name="clima_09d">Garoa</string>
+    <string name="clima_10d">Chuva</string>
+    <string name="clima_11d">Tempestade</string>
+    <string name="clima_13d">Neve</string>
+    <string name="clima_50d">Neblina</string>
+
     <string name="temperatura_interpolation">%d° C</string>
     <string name="minima_interpolation">Mín: %d° C</string>
     <string name="maxima_interpolation">Máx: %d° C</string>

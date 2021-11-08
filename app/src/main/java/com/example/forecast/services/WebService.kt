@@ -14,7 +14,6 @@ import com.example.forecast.db.repositories.CidadeRepository
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import okhttp3.*
-import org.intellij.lang.annotations.Language
 import org.json.JSONObject
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -43,7 +42,7 @@ class WebService(var activity: Activity) {
         val cm = activity.application.getSystemService(ConnectivityManager::class.java)
         var caps = cm.getNetworkCapabilities(cm.activeNetwork)
         if (caps != null) {
-            return caps!!.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+            return caps.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
         } else {
             cm.registerDefaultNetworkCallback(object : ConnectivityManager.NetworkCallback() {
                 override fun onAvailable(network: Network) {
@@ -61,18 +60,14 @@ class WebService(var activity: Activity) {
 
     suspend fun getAll() {
         if (hasConnection()) {
-            Log.i("NETWORK_STATE", true.toString())
             for (codigo in codigos) {
                 get(codigo)
             }
-        } else {
-            Log.i("NETWORK_STATE", false.toString())
         }
     }
 
     suspend fun get(codigo: String) {
         var url = "$baseUrl?id=$codigo&appid=$OPENWEATHER_APIKEY"
-        //Log.i("WEBSERICE URL", url)
         var req = Request.Builder()
             .url(url)
             .build()
@@ -83,7 +78,6 @@ class WebService(var activity: Activity) {
             }
 
             override fun onResponse(call: Call, response: Response) {
-                //Log.i("weather response", response.message)
                 if (response.code != 200) {
                     Log.e("WEBSERVICE ERROR", response.toString())
                 } else {
@@ -114,22 +108,24 @@ class WebService(var activity: Activity) {
     }
 
     fun parseJson(json: JSONObject): Cidade {
-        var weather = json.getJSONObject("main")
+        var main = json.getJSONObject("main")
+        var weather = JSONObject(json.getJSONArray("weather")[0].toString())
         var coordinates = json.getJSONObject("coord")
         var wind = json.getJSONObject("wind")
 
         var cidade = Cidade(
             json.getString("id"),
             json.getString("name"),
-            weather.getDouble("temp").toFloat(),
-            weather.getDouble("temp_min").toFloat(),
-            weather.getDouble("temp_max").toFloat(),
+            weather.getString("icon"),
+            main.getDouble("temp").toFloat(),
+            main.getDouble("temp_min").toFloat(),
+            main.getDouble("temp_max").toFloat(),
             coordinates.getDouble("lat").toFloat(),
             coordinates.getDouble("lon").toFloat(),
             wind.getDouble("speed").toFloat(),
             json.getInt("visibility"),
-            weather.getInt("humidity"),
-            weather.getInt("pressure")
+            main.getInt("humidity"),
+            main.getInt("pressure")
         )
         return cidade
     }

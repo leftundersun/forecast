@@ -3,7 +3,6 @@ package com.example.forecast.views.add_cidade
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -57,7 +56,6 @@ class AddCidadeFragment : Fragment() {
 
     fun setCidadesObserver() {
         this.viewModel.findAllByCodigosNotIn.observe(viewLifecycleOwner, { cidades ->
-            Log.i("findAllByCodigosNotIn.observe", cidades.size.toString())
             if (cidades.isNotEmpty()) {
                 this.showList()
             } else {
@@ -72,11 +70,8 @@ class AddCidadeFragment : Fragment() {
         this.binding.listAddCidades.layoutManager = LinearLayoutManager(context)
         this.binding.listAddCidades.adapter = adapter
         this.adapter.onItemClick = { cidade ->
-            Log.i("adapter.onItemClick", cidade.codigo)
             var codigos: MutableSet<String> = this.sharedPrefs.getStringSet(resources.getString(R.string.cidades_selecionadas_key), mutableSetOf<String>())!!
-            Log.i("adapter.onItemClick", codigos.size.toString())
             codigos.add(cidade.codigo)
-            Log.i("adapter.onItemClick", codigos.size.toString())
             with(this.sharedPrefs.edit()){
                 putStringSet(
                     resources.getString(R.string.cidades_selecionadas_key),
@@ -97,7 +92,6 @@ class AddCidadeFragment : Fragment() {
             override fun onQueryTextChange(search: String?): Boolean {
                 if (!search.isNullOrEmpty()) {
                     viewModel.searchByNome(search).observe( viewLifecycleOwner, { cidades ->
-                        Log.i("searchByNome.observe", cidades.size.toString())
                         if (cidades.isNotEmpty()) {
                             showList()
                         } else {
