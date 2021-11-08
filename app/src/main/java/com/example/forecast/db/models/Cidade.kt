@@ -31,8 +31,11 @@ data class Cidade(
     var pressao: Int = 0) {
 
     override fun toString(): String {
-        var cTemp = temperatura - 273.15
-        return "$nome - ${cTemp.roundToInt()}° C"
+        return "$nome - ${parseCelsius(temperatura)}° C"
+    }
+
+    fun parseCelsius(temp: Float): Int {
+        return (temp - 273.15).roundToInt()
     }
 
 }

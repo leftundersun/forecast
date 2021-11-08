@@ -22,30 +22,30 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     init {
         val cidadeDao = ForecastDatabase.getDb(application).cidadeDao()
-        cidadeRepository = CidadeRepository(cidadeDao)
+        this.cidadeRepository = CidadeRepository(cidadeDao)
 
-        sharedPrefs = application.getSharedPreferences(
+        this.sharedPrefs = application.getSharedPreferences(
             application.resources.getString(R.string.shared_preferences_file),
             Context.MODE_PRIVATE
         )
-        lastUpdate.value = sharedPrefs.getString(application.resources.getString(R.string.last_update_key),"Nunca")!!
+        this.lastUpdate.value = sharedPrefs.getString(application.resources.getString(R.string.last_update_key),"Nunca")!!
 
-        cidadeRepository.codigos = sharedPrefs.getStringSet(application.resources.getString(R.string.cidades_selecionadas_key), mutableSetOf<String>())!!
-        Log.i("cidadeRepository.codigos", cidadeRepository.codigos.size.toString())
-        findAllByCodigos = cidadeRepository.findAllByCodigos
+        var codigos = sharedPrefs.getStringSet(application.resources.getString(R.string.cidades_selecionadas_key), mutableSetOf<String>())!!
+        Log.i("cidadeRepository.codigos", codigos.size.toString())
+        this.findAllByCodigos = cidadeRepository.findAllByCodigos(codigos)
 
-        mainPrefListener = SharedPreferences.OnSharedPreferenceChangeListener { prefs, key ->
+        this.mainPrefListener = SharedPreferences.OnSharedPreferenceChangeListener { prefs, key ->
             Log.i("main.prefListener", key)
             if (key == application.resources.getString(R.string.last_update_key)) {
-                lastUpdate.value = sharedPrefs.getString(application.resources.getString(R.string.last_update_key),"Nunca")!!
+                this.lastUpdate.value = sharedPrefs.getString(application.resources.getString(R.string.last_update_key),"Nunca")!!
             }
             if (key == application.resources.getString(R.string.cidades_selecionadas_key)) {
-                cidadeRepository.codigos = sharedPrefs.getStringSet(application.resources.getString(R.string.cidades_selecionadas_key), mutableSetOf<String>())!!
-                Log.i("cidadeRepository.codigos", cidadeRepository.codigos.size.toString())
-                findAllByCodigos = cidadeRepository.findAllByCodigos
+                var codigos = sharedPrefs.getStringSet(application.resources.getString(R.string.cidades_selecionadas_key), mutableSetOf<String>())!!
+                Log.i("cidadeRepository.codigos", codigos.size.toString())
+                this.findAllByCodigos = cidadeRepository.findAllByCodigos(codigos)
             }
         }
-        sharedPrefs.registerOnSharedPreferenceChangeListener(mainPrefListener)
+        this.sharedPrefs.registerOnSharedPreferenceChangeListener(mainPrefListener)
     }
 
 }

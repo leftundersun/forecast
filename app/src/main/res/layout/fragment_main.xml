@@ -43,8 +43,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="@dimen/txt_normal"
-            android:padding="@dimen/space2"
-            android:text="@string/last_update"/>
+            android:padding="@dimen/space2"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:visibility="gone"

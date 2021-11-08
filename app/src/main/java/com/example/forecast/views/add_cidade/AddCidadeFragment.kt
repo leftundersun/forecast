@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -22,48 +23,26 @@ import kotlinx.coroutines.runBlocking
 class AddCidadeFragment : Fragment() {
 
     private lateinit var binding: FragmentAddCidadeBinding
-    var sharedPrefs: SharedPreferences? = null
+    private lateinit var viewModel: AddCidadeViewModel
+    private lateinit var adapter: CidadeAdapter
+    private lateinit var sharedPrefs: SharedPreferences
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle? ): View? {
-        binding = FragmentAddCidadeBinding.inflate(layoutInflater)
-        sharedPrefs = this.requireActivity().getSharedPreferences(
+        this.binding = FragmentAddCidadeBinding.inflate(layoutInflater)
+        this.sharedPrefs = this.requireActivity().getSharedPreferences(
             resources.getString(R.string.shared_preferences_file),
             Context.MODE_PRIVATE
         )
-        var viewModel = ViewModelProvider(this).get(AddCidadeViewModel::class.java)
 
-        var adapter = CidadeAdapter()
-        binding.listAddCidades.layoutManager = LinearLayoutManager(context)
-        binding.listAddCidades.adapter = adapter
-        adapter.onItemClick = { cidade ->
-            Log.i("adapter.onItemClick", cidade.codigo)
-            var codigos: MutableSet<String> = sharedPrefs!!.getStringSet(resources.getString(R.string.cidades_selecionadas_key), mutableSetOf<String>())!!
-            Log.i("adapter.onItemClick", codigos.size.toString())
-            codigos.add(cidade.codigo)
-            Log.i("adapter.onItemClick", codigos.size.toString())
-            with(sharedPrefs!!.edit()){
-                putStringSet(
-                    resources.getString(R.string.cidades_selecionadas_key),
-                    codigos
-                )
-                apply()
-            }
-            Navigation.findNavController(binding.root).navigate(R.id.action_addCidadeFragment_to_mainFragment)
-        }
+        this.setListAdapter()
 
-        viewModel.findAllByCodigosNotIn.observe(viewLifecycleOwner, { cidades ->
-            Log.i("findAllByCodigosNotIn.observe", cidades.size.toString())
-            if (cidades.isNotEmpty()) {
-                showList()
-            } else {
-                showEmptyMessage()
-            }
-            adapter.setContent(cidades)
-        })
+        this.viewModel = ViewModelProvider(this).get(AddCidadeViewModel::class.java)
+        this.setCidadesObserver()
+        this.setSearchListener()
 
-        loadCidades()
+        this.loadCidades()
 
-        return binding.root
+        return this.binding.root
     }
 
     fun loadCidades(): Boolean {
@@ -74,6 +53,64 @@ class AddCidadeFragment : Fragment() {
             }
         }
         return true
+    }
+
+    fun setCidadesObserver() {
+        this.viewModel.findAllByCodigosNotIn.observe(viewLifecycleOwner, { cidades ->
+            Log.i("findAllByCodigosNotIn.observe", cidades.size.toString())
+            if (cidades.isNotEmpty()) {
+                this.showList()
+            } else {
+                this.showEmptyMessage()
+            }
+            this.adapter.setContent(cidades)
+        })
+    }
+
+    fun setListAdapter() {
+        this.adapter = CidadeAdapter()
+        this.binding.listAddCidades.layoutManager = LinearLayoutManager(context)
+        this.binding.listAddCidades.adapter = adapter
+        this.adapter.onItemClick = { cidade ->
+            Log.i("adapter.onItemClick", cidade.codigo)
+            var codigos: MutableSet<String> = this.sharedPrefs.getStringSet(resources.getString(R.string.cidades_selecionadas_key), mutableSetOf<String>())!!
+            Log.i("adapter.onItemClick", codigos.size.toString())
+            codigos.add(cidade.codigo)
+            Log.i("adapter.onItemClick", codigos.size.toString())
+            with(this.sharedPrefs.edit()){
+                putStringSet(
+                    resources.getString(R.string.cidades_selecionadas_key),
+                    codigos
+                )
+                apply()
+            }
+            Navigation.findNavController(this.binding.root).navigate(R.id.action_addCidadeFragment_to_mainFragment)
+        }
+    }
+
+    fun setSearchListener() {
+        this.binding.txtSearchCidades.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(p0: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(search: String?): Boolean {
+                if (!search.isNullOrEmpty()) {
+                    viewModel.searchByNome(search).observe( viewLifecycleOwner, { cidades ->
+                        Log.i("searchByNome.observe", cidades.size.toString())
+                        if (cidades.isNotEmpty()) {
+                            showList()
+                        } else {
+                            showEmptyMessage()
+                        }
+                        adapter.setContent(cidades)
+                    })
+                    return true
+                } else {
+                    return false
+                }
+            }
+        })
     }
 
     fun showList() {

@@ -4,7 +4,7 @@
     <string name="add_cidade_activity_title">Adicionar cidade</string>
     <string name="show_details_activity_title">Mais Informações</string>
 
-    <string name="last_update">Última atualização: </string>
+    <string name="last_update_interpolation">Última atualização: %1$s</string>
     <string name="nenhuma_cidade_selecionada">Adicione cidades para ver a previsão do tempo para elas</string>
     <string name="nenhuma_cidade_para_exibir">Ainda não há nenhuma cidade para selecionar, verifique sua conexão com a internet</string>
     <string name="add_cities_tooltip">Adicionar cidades</string>
@@ -14,18 +14,23 @@
     <string name="txt_info_maxima">Máx: </string>
     <string name="txt_info_latitude">Latitude: </string>
     <string name="txt_info_longitude">Longitude: </string>
-    <string name="txt_info_wind">Velocidade do vento</string>
-    <string name="txt_info_visibilidade">Visibilidade</string>
-    <string name="txt_info_umidade">Umidade</string>
-    <string name="txt_info_pressure">Pressão atmosférica</string>
+    <string name="txt_info_wind">Velocidade do vento:</string>
+    <string name="txt_info_visibilidade">Visibilidade:</string>
+    <string name="txt_info_umidade">Umidade:</string>
+    <string name="txt_info_pressure">Pressão atmosférica:</string>
 
-    <string name="txt_info_celsius">° C</string>
-    <string name="txt_info_percent">%</string>
-    <string name="txt_info_meters_per_second"> m/s</string>
-    <string name="txt_info_kilometers"> km</string>
-    <string name="txt_info_hectopascal"> hPa</string>
+    <string name="temperatura_interpolation">%d° C</string>
+    <string name="minima_interpolation">Mín: %d° C</string>
+    <string name="maxima_interpolation">Máx: %d° C</string>
+    <string name="latitude_interpolation">Latitude: %f</string>
+    <string name="longitude_interpolation">Longitude: %f</string>
+    <string name="umidade_interpolation">%d\%%</string>
+    <string name="vento_interpolation">%.2f m/s</string>
+    <string name="visibilidade_interpolation">%.2f km</string>
+    <string name="pressao_interpolation">%d hPa</string>
 
     <string name="shared_preferences_file">com.example.forecast.PREFERENCE_FILE</string>
     <string name="cidades_selecionadas_key">cidades_selecionas</string>
+    <string name="cidade_to_show_key">cidade_to_show</string>
     <string name="last_update_key">last_update</string>
 </resources>

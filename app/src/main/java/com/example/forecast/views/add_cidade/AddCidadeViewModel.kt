@@ -26,18 +26,22 @@ class AddCidadeViewModel(application: Application) : AndroidViewModel(applicatio
             application.resources.getString(R.string.shared_preferences_file),
             Context.MODE_PRIVATE
         )
-        cidadeRepository.codigos = sharedPrefs.getStringSet(application.resources.getString(R.string.cidades_selecionadas_key), mutableSetOf<String>())!!
-        Log.i("cidadeRepository.codigos", cidadeRepository.codigos.size.toString())
-        findAllByCodigosNotIn = cidadeRepository.findAllByCodigosNotIn
+        var codigos = sharedPrefs.getStringSet(application.resources.getString(R.string.cidades_selecionadas_key), mutableSetOf<String>())!!
+        Log.i("addCidadeViewModel.codigos", codigos.size.toString())
+        findAllByCodigosNotIn = cidadeRepository.findAllByCodigosNotIn(codigos)
 
         addCidadePrefListener = SharedPreferences.OnSharedPreferenceChangeListener { prefs, key ->
-            Log.i("cidadeRepository.codigos", cidadeRepository.codigos.size.toString())
             if (key == application.resources.getString(R.string.cidades_selecionadas_key)) {
-                cidadeRepository.codigos = sharedPrefs.getStringSet(application.resources.getString(R.string.cidades_selecionadas_key), mutableSetOf<String>())!!
-                findAllByCodigosNotIn = cidadeRepository.findAllByCodigosNotIn
+                var codigos = sharedPrefs.getStringSet(application.resources.getString(R.string.cidades_selecionadas_key), mutableSetOf<String>())!!
+                Log.i("addCidadeViewModel.codigos", codigos.size.toString())
+                findAllByCodigosNotIn = cidadeRepository.findAllByCodigosNotIn(codigos)
             }
         }
         sharedPrefs.registerOnSharedPreferenceChangeListener(addCidadePrefListener)
+    }
+
+    fun searchByNome(search: String): LiveData<List<Cidade>> {
+        return cidadeRepository.searchByNome(search)
     }
 
 }

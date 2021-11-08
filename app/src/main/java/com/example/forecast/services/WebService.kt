@@ -72,7 +72,7 @@ class WebService(var activity: Activity) {
 
     suspend fun get(codigo: String) {
         var url = "$baseUrl?id=$codigo&appid=$OPENWEATHER_APIKEY"
-        Log.i("WEBSERICE URL", url)
+        //Log.i("WEBSERICE URL", url)
         var req = Request.Builder()
             .url(url)
             .build()
@@ -83,12 +83,11 @@ class WebService(var activity: Activity) {
             }
 
             override fun onResponse(call: Call, response: Response) {
-                Log.i("weather response", response.message)
+                //Log.i("weather response", response.message)
                 if (response.code != 200) {
                     Log.e("WEBSERVICE ERROR", response.toString())
                 } else {
                     try {
-
                         with(sharedPrefs.edit()){
                             putString(
                                 activity.resources.getString(R.string.last_update_key),
